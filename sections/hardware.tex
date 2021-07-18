@@ -1,0 +1,9 @@
+\section{Hardware-based TEE Virtualization}
+
+\subsection{vTPM}
+
+Trusted Platform Module (TPM) is a international standard for cryptoprocessors. Similar to TrustZone, it is a secure hardware extensions and designed for trusted computing. Trusted Computing Group (TCG) suggests every system should have a TPM. It provides the functionalities of attestation of system state, generation and conservation of the cryptographic data, identification of platform. Since it is a hardware standard, it is naturally tamper resistanced from software attacks.
+
+For virtual machine, vTPM is a solution to virtualize TPM into multiple vTPM instances. Each vTPM instance will provide security support for its respective virtual machine just like a physical TPM. 
+
+The 

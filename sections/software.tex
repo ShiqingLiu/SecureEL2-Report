@@ -20,8 +20,7 @@ Constrained Isolated Execution Environment (CIEE) provides isolation.
 
 % vTZ design graphs
 
-The vTZ design is shown in figure. There are four secure module in vTZ, Secure
-Memory Mapping (SMM), Secure World Switching (SWS), Control Flow Lock (CFLock) ,
+The design of vTZ is shown in figure. There are four secure module in vTZ, Secure Memory Mapping (SMM), Secure World Switching (SWS), Control Flow Lock (CFLock) ,
 and Constrained Isolated Execution Environment (CIEE). Running in secure world,
 SMM controls all memory mappings. To achieve that, the hypervisor is not allow
 to contain the sensitive instruction to access and control the translation
@@ -41,3 +40,8 @@ In conclusion, vTZ is mostly close to our goals Secure EL2 project. vTZ is also 
 
 % temp{vTZ advantages and disadvantages, our design section: }
 
+\subsection{TEEv}
+
+TEEv is another TEE virtualization architecture to provide restricted TEEs, i.e. vTEEs. These vTEEs are concurrent in runtime and isolated from each other. (More about vTEE). A tiny hypervisor, TEE-visor, running in Secure World to manage these vTEEs and to provide isolation between vTEEs. It allows each vTEE from different manufacturers to host their own TA. 
+
+To address the challenge of the lack of TrustZone virtualization support, TEEv deploys the TEE-visor and vTEEs at the same privilege level, secure EL1. In addition, TEEv modified the commercial TEE by scanning vTEE's binary to remove the MMU-related instructions, so that TEE-visor can exclusively control the MMU. Controling the MMU, TEE-visor can protect itself in security and confidentiality, and isolate vTEEs by protecting each vTEE's entries. As a result of removing the sensitive instruction, TEE-visor is responsible for the communication between vTEE and corresponding client application (CA). In details, TEE-visor handles the request from CAs and verify the page access from TA to CA. For isolation of vTEEs and REEs, TEE-visor manage the page table exclusively in order that each vTEE and each REE can only access their own page. Similar to vTZ, TEE-visor protect the kernel of vTEEs by setting their kernel as read only.
