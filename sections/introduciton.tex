@@ -1,10 +1,16 @@
 \section{Introduction \& Background}
 
-Trusted Execution Environment (TEE) is a security domian in CPU who is isolated from the other. TEE is capable of providing confidentiality and intergity for the codes and data stored in it. 
+Trusted Execution Environment (TEE) is a security domian in CPU who is isolated from the other. TEE is capable of providing confidentiality and intergity for the codes and data stored in it.
 
-TrustZone is the first commercial hardware architecture to support TEE. After development in these years, TrustZone is widely used in mobile devices to provide trusted computing. TrustZone seperates the hardware and software resources, such as memories, I/O, and interrupts, into two parts, Secure world and Non-secure world (i.e. Normal world). Correspondingly, processors have two state, Secure state and Non-secure state, to access resources in two different worlds. Running on TrustZone, TEE-kernel  There are many 
+\subsection{TrustZone}
 
-Virtualization is a technology to divide the hardware resouce and create virtual instances who act like a real system. Since 1960s, virtualization has been always popular in computer science. The trend of virtualization is more intense these year, especially after cloud computing becomes more and more popular. However, TrustZone is not designed to be virtualizable in the past few years. All virtual machines managed by the same hypervisor shoudld trust the same TEE, while there are amount of vulnerabilities discovered in major venders' TEE-kernel. 
+TrustZone is the first commercial hardware architecture to support TEE. After development in these years, TrustZone is widely used in mobile devices to provide trusted computing. TrustZone seperates the hardware and software resources, such as memories, I/O, and interrupts, into two parts, Secure world and Non-secure world (i.e. Normal world). Each world has their own kernel space and user space, associated with cache, memory, and etc. Non-seucre world is not capable of accessing the resources in Secure world, but Secure world has access rights to resources in Non-secure world. In addition, each world has its own privileges level, represented in exception levels. Note that there is only Non-secure world having exception level 2 (EL2). Correspondingly, processors have two state, Secure state and Non-secure state, to handle affairs in two different worlds.
+
+\subsection{Virtualization of TEE Technology}
+
+Virtualization is a technology to divide the hardware resouce and create virtual instances who act like a real system. Since 1960s, virtualization has been always popular in computer science. The trend of virtualization is more intense these year, especially after cloud computing becomes more and more popular. 
+
+However, TrustZone is not designed to be virtualizable in the past few years. All virtual machines managed by the same hypervisor shoudld trust the same TEE, while there are amount of vulnerabilities discovered in major venders' TEE-kernel. 
 
 % Histroy of virtualization.
 
