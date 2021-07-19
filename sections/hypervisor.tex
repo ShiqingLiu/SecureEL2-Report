@@ -1,3 +1,15 @@
 \section{Hypervisor}
 
-Some 
+
+\subsection{KVM}
+
+vTZ is proposed by Christoffer Dall and Jason in 2014 on ASPLOS. As ARM CPUs become increasingly common in mobile devices and servers, there is a growing demand for providing the benefits of virtualization for ARM-based devices. At that time, ARM Xen has already been proposed, but there are some disadvantages on ARM Xen. For example, ARM Xen requires much maintenance effort since it is a hypervisor interacting with hardware by itself. So it needs to write its own code to be compatible with different ARM-based platform. However, KVM does not have this disadvantage. KVM is just a kernel module of Linux. It only provides hypervisor-related functions in KVM code and gives Linux full privilege to interact with hardware. Since Linux is implemented on all ARM-based platforms, KVM can be adapted to all ARM-based platforms by a good-defined API between KVM and Linux. 
+
+The reason we try to understand KVM design is that in S-EL2 project we need a hypervisor running in NWd to build the whole model. And the preferred choice is KVM. Understanding the design and implements can help us to build the model and the following modification on KVM.
+
+
+\subsection{HypSec}
+
+HypSec is proposed by Shih-Wei Li, John S. Koh, and Jason Nieh in 2019. HypSec is a new hypervisor design scheme. With HypSec, we can retrofit an existing hypervisor. After retrofitting the hypervisor, its TCB will decrease with serveral orders of magnitude and its performance overhead is still acceptable. In conclusion, this is a hypervisor design pattern which can improve security of a hypervisor with a cost of small overhead.
+
+The reason that we read this paper is that there are two hypervisors in our S-EL2 model. A normal world hypervisor like KVM in NWd and a secure world hypervisor like Hafnium in SWd. In future we need to build a cross-world communication channel between these two hypervisors. And then there is a problem, the TCB might be too large. We might need to include KVM, hafnium and hafnium code lines into TCB. The TCB can be over millions lines of code, which is not acceptable. With HypSec, we can reduce KVM and hafnium's TCB by a several orders of magnitude, so a much smaller TCB can be gained.
