@@ -1,10 +1,15 @@
 \section{Introduction \& Background}
 
-Trusted Execution Environment (TEE) is a security domian in CPU who is isolated from the other. TEE is capable of providing confidentiality and intergity for the codes and data stored in it.
+Under data explosion adn data becaming treasures, the cloud computing is valued and being developed to store and dig the data mine. In order to meet the various needs of cloud computing, virtualization has become an important technology of cloud computing. In the meanwhile, the securtiy of cloud is also to be taken more serious. Lots of techniques is used, including TEE.
+
+Trusted Execution Environment (TEE) is a security domian in CPU who is isolated from the other, i.e. REE. TEE is capable of providing confidentiality and intergity for the codes and data stored in it. All accepted code have been authorized by TEE so that it is trusted. Besides, TEE need all code and assets load and start in a expected way so that it won't be tempered. A TEE should also responsible for isolation between TEE and REE. In addition, each TA can only access it own assets. A TEE is a important composition of trusted computing. 
 
 \subsection{TrustZone}
 
 TrustZone is the first commercial hardware architecture to support TEE. After development in these years, TrustZone is widely used in mobile devices to provide trusted computing. TrustZone seperates the hardware and software resources, such as memories, I/O, and interrupts, into two parts, Secure world and Non-secure world (i.e. Normal world). Each world has their own kernel space and user space, associated with cache, memory, and etc. Non-seucre world is not capable of accessing the resources in Secure world, but Secure world has access rights to resources in Non-secure world. In addition, each world has its own privileges level, represented in exception levels. Note that there is only Non-secure world having exception level 2 (EL2). Correspondingly, processors have two state, Secure state and Non-secure state, to handle affairs in two different worlds.
+
+\subsection{Secure Guard Extension (SGX)}
+
 
 \subsection{Virtualization of TEE Technology}
 
@@ -16,9 +21,9 @@ However, TrustZone is not designed to be virtualizable in the past few years. Al
 
 % Histroy of virtualizing TEE. 
 
-Basic idea to virtualize TEE.
+Basic idea to virtualize TEE. simulation base virtualize. hardware virtualize. an conclusion of vTZ and TEEv method.
 
-Virtualized TEE in industry. Sierraware. Imagination Technologies
+Virtualized TEE in industry. Sierraware. Imagination Technologie (multi-trust TEE)
 
 The arrangement of the report. Firstly talk about the software-simulation base
 virtualization(vTZ). second hardwared-assisted base virtualization(not SEL2)

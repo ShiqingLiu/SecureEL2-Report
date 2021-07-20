@@ -1,3 +1,19 @@
 \section{Discussion}
 
 we discussion the differences between S-EL2 and related works. List at least three innovations. 
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+
+\begin{table*}[]
+    \begin{tabular}{llllllll}
+    \hline
+    \textbf{TEE} & \tabincell{c}{hardware\\ supported} & \tabincell{c}{modify TEE-kernel} & \tabincell{l}{support multiple\\ types of TEE-kernel} & \tabincell{c}{modify\\ hypervisor} & \tabincell{c}{transparent\\ to TA and REE} & \tabincell{c}{implemented\\ security hardware} & \tabincell{c}{architecture} \\ \hline
+    vTZ          & No                          & yes                        & yes                                           & yes                        & yes                                & TrustZone                              & Arm                   \\
+    TEEv         & No                          & yes                        & yes                                           & yes                        & yes                                & TrustZone                              & Arm                   \\
+    Secure EL2   & yes                         & no                         & yes                                           & yes (a litttle)            & yes                                & TrustZone                              & Arm                   \\
+    SGX          & yes                         & -                          & -                                             & -                          &                                    &                                        &                       \\
+    SEV          &                             &                            &                                               &                            &                                    &                                        &                       \\
+    vTPM         &                             &                            &                                               &                            &                                    &                                        &                       \\ \hline
+    \end{tabular}
+    \end{table*}
