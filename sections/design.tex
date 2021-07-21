@@ -1,3 +1,34 @@
-\section{Design of S-EL2}
+\section{Design}
+\label{sec:design}
 
-Primary design of S-EL2.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=3.2in]{goal_model.png}
+	\caption{Whole Model} 
+	\label{fig:whole_model}
+\end{figure}
+
+Figure~\ref{fig:whole_model} describes the whole model of our project. Arm-trusted-firmware(ATF) is running in EL3, which handles secure booting and secure world switching. The cross-world communication channel is handled by ATF. In normal world, the layout is the same as the cloud server providers’ layout. A normal world hypervisor, such as KVM, runs in EL2. The guest OSes are running in EL1, which provides services hosted in EL0 to cloud users. In secure world, a hypervisor called Hafnium~\cite{hafnium:Linaro} is running in secure EL2, which supports multiple secure partitions (SPs) in secure EL1. Secure Partitions, running in secure EL1, are actually multiple bare-metal trusted guest OSes. Each of them occupies only a small block of memory, for example 1MB, providing trusted services for the normal world software. Since trusted services are always simple and their design purposes are always limited to encryption, secure storage and so on, such a small block of memory fulfills their requirements.
+There are two main challenges in our design:
+\begin{itemize}
+	\item Large trusted computing base (TCB) if not handled carefully
+	\item Binding of virtual machine with its associated SP
+\end{itemize}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=3.2in]{TCB1.png}
+	\caption{TCB before Modification} 
+	\label{fig:tcb1}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=3.2in]{TCB2.png}
+	\caption{TCB after Modification} 
+	\label{fig:tcb2}
+\end{figure}
+
+As for the first challenge, it is caused by the reason that the management of VMs is done by the two hypervisors, one in normal world and another one in secure world, in cooperation. Hafnium, the hypervisor in secure world, needs the information delivered by normal world hypervisor to deploy security policies. If the normal world hypervisor is compromised, it can cheat Hafnium to allow a virtual machine in normal world to ask for services from a SP which is not bound to itself. For example, assume there are two VMs in normal world and two SPs in secure world. VM1 is bound to SP1 and VM2 is bound to SP2. Now VM1 is going to ask for trusted services from SP1, so it sends message to normal world hypervisor, in this model KVM, that it wants to use trusted services hosted in SP1. However, a compromised KVM can forge the requirements as VM2 is asking for trusted services of SP2 and sends the request to Hafnium. Hafnium has no ability to verify whether the request is true, so it has to provide SP2 services to KVM. KVM can then provide the SP2 services to VM1, which completes an attack. Since the security of the whole system depends on the security of the normal world hypervisor, the code base of the normal world hypervisor must be considered when computing TCB as~\ref{fig:tcb1}.
+To solve this problem, we refer to the idea mentioned in vTZ, which puts forward an idea called “Function-Protection-Separation Design Principle”. It means, we separate the functionalities of the normal world hypervisor into function-related functionality and security-related functionality. The security-related functionality, like sending requests to secure world, should be moved to secure world as secure world is trusted in our threat model, while the function-related functionality remains in normal world to avoid a large TCB. Control flow locking (CFL) is added to the code in normal world hypervisor to make sure it must invoke the specified code residing in secure world. As described in Figure~\ref{fig:tcb2}, after adopting the design principle introduced by vTZ, the TCB only includes Hafnium, SPs and the security-related functionality of the normal world hypervisor, TCB is decreased by several orders of magnitude.
+For the second challenge, it can be solved in a very simple and direct method. In our threat model, we assume that the normal world hypervisor is trustable during initialization process. In ARMv8 architecture, each guest OS will be assigned a VMID when initialization. We can make normal world hypervisor passed the VMIDs of the guest OS to Hafnium during initialization process. So Hafnium has the VMIDs of all guest OSes and SPs. Then every time a guest OS requests for trusted services from its associated SP. Hafnium will check whether the VMID of the guest OS and the SP matches. If matched, Hafnium can provide the services to the guest OS, and denies the request otherwise.
