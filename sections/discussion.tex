@@ -2,18 +2,26 @@
 
 we discussion the differences between S-EL2 and related works. List at least three innovations. 
 
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
+% vTZ is a 
+% vTZ的VM和vTEE都跑在NW, 但是每次改页表都得做世界切换, 在SEL2就不用, vTZ有多个VM和多个vTEE,VM之间的切换，vTEE之间的切换，VM和vTEE之间的切换，都要一次世界切换.
+% 但在SEL2中,只有VM和vTEE之间的切换是需要世界切换的, vTZ需要修改NW hypervisor的binary.
+
+
 
 \begin{table*}[]
     \begin{tabular}{llllllll}
     \hline
     \textbf{TEE} & \tabincell{c}{hardware\\ supported} & \tabincell{c}{modify TEE-kernel} & \tabincell{l}{support multiple\\ types of TEE-kernel} & \tabincell{c}{modify\\ hypervisor} & \tabincell{c}{transparent\\ to TA and REE} & \tabincell{c}{implemented\\ security hardware} & \tabincell{c}{architecture} \\ \hline
-    vTZ          & No                          & yes                        & yes                                           & yes                        & yes                                & TrustZone                              & Arm                   \\
+    vTZ          & yes                         & yes                        & yes                                           & yes                        & yes                                & TrustZone                              & Arm                   \\
     TEEv         & No                          & yes                        & yes                                           & yes                        & yes                                & TrustZone                              & Arm                   \\
     Secure EL2   & yes                         & no                         & yes                                           & yes (a litttle)            & yes                                & TrustZone                              & Arm                   \\
-    SGX          & yes                         & -                          & -                                             & -                          &                                    &                                        &                       \\
+    TDX          & yes                         & -                          & -                                             & -                          &                                    &                                        &                       \\
     SEV          &                             &                            &                                               &                            &                                    &                                        &                       \\
-    vTPM         &                             &                            &                                               &                            &                                    &                                        &                       \\ \hline
+    CCA          &                             &                            &                                               &                            &                                    &                                        &                       \\ \hline
     \end{tabular}
+    \caption{Comparison with current TEE virtualization architectures.}
+	\label{tab:comptee}
     \end{table*}
+
+The VM and vTEE of vTZ run in NW, but every time the page table is changed, the world must be switched. It is not necessary in SEL2. vTZ has multiple VMs and multiple vTEEs, switching between VMs, switching between vTEEs, VMs  Switching between vTEE and vTEE requires a world switch.
+But in SEL2, only the switching between VM and vTEE requires world switching, and vTZ needs to modify the binary of the NW hypervisor.

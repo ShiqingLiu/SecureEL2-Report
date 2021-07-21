@@ -13,3 +13,21 @@ The reason we try to understand KVM design is that in S-EL2 project we need a hy
 HypSec is proposed by Shih-Wei Li, John S. Koh, and Jason Nieh in 2019. HypSec is a new hypervisor design scheme. With HypSec, we can retrofit an existing hypervisor. After retrofitting the hypervisor, its TCB will decrease with serveral orders of magnitude and its performance overhead is still acceptable. In conclusion, this is a hypervisor design pattern which can improve security of a hypervisor with a cost of small overhead.
 
 The reason that we read this paper is that there are two hypervisors in our S-EL2 model. A normal world hypervisor like KVM in NWd and a secure world hypervisor like Hafnium in SWd. In future we need to build a cross-world communication channel between these two hypervisors. And then there is a problem, the TCB might be too large. We might need to include KVM, hafnium and hafnium code lines into TCB. The TCB can be over millions lines of code, which is not acceptable. With HypSec, we can reduce KVM and hafnium's TCB by a several orders of magnitude, so a much smaller TCB can be gained.
+
+\subsection{SierraVisor}
+
+Proposed by Sierraware, a company dedicated to deliver the virtualization technologies and security solutions, SierraVisor is a hypervisor for ARM which is integrated with TrustZone and Android. Specifically, SierraVisor supports TrustZone Monitor as VMM on Cortex A9 and ARM11, i.e. SierraVisor use TrustZone Monitor and extend it as a hypervisor. The guest can continue to work without modification. And kernel can continue to run in supervisor mode. Guest OSes can run in their inidividual containers.~\cite{sierraware}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{SierraVisor.png}
+    \caption{SierraVisor Architecture Overview}
+    \label{fig:SierraVisor}
+\end{figure}
+
+Above is the architecture of SierraVisor. At the bottom there are TrustZone Monitor and SierraVisor Hypervisor. The SierraVisor has two hypervisor, normal world hypervisor and secure world hypervisor running in each world. Both hypervisor supports multiple OS in Normal World and Secure World. 
+
+As a product, SierraVisor is quite old because the supported SoC presenting on the their website is up to Cortex A15, a processors implementing the Armv7-A architecture. The timestamp of most web pages about SierraVisor freezes in 2012. But the idea of SierraVisor and its contribution on supporting multiple TEE-kernel is on the right direction. 
+% Different from KVM, SierraVisor is a type one hypervisor.
+
+(advantages: high compatibility, type-2 hypervisor, as long as linux support, mine supports.)

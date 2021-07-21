@@ -19,6 +19,12 @@ monitor in secure world control the memory mapping and world switching. A
 Constrained Isolated Execution Environment (CIEE) provides isolation.
 
 % vTZ design graphs
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.90]{vTZ_design.png}
+    \caption{vTZ system designs}
+    \label{fig:vTZ}
+\end{figure}
 
 The design of vTZ is shown in figure. There are four secure module in vTZ, Secure Memory Mapping (SMM), Secure World Switching (SWS), Control Flow Lock (CFLock) ,
 and Constrained Isolated Execution Environment (CIEE). Running in secure world,
@@ -42,21 +48,12 @@ In conclusion, vTZ is mostly close to our goals Secure EL2 project. vTZ is also 
 
 \subsection{TEEv}
 
-TEEv \cite{li2019teev} is another TEE virtualization architecture to provide restricted TEEs, i.e. vTEEs. These vTEEs are concurrent in runtime and isolated from each other. (More about vTEE). A tiny hypervisor, TEE-visor, running in Secure World to manage these vTEEs and to provide isolation between vTEEs. It allows each vTEE from different manufacturers to host their own TA. 
+TEEv \cite{li2019teev} is another TEE virtualization architecture to provide restricted TEEs, i.e. vTEEs. These vTEEs are concurrent in runtime and isolated from each other. The vTEEs is not like traditional TEEs who can access the REE's resources. They can only access their own assest(More about vTEE). A tiny hypervisor, TEE-visor, running in Secure World to manage these vTEEs and to provide isolation between vTEEs. TEE-visor allows each vTEE from different manufacturers to host their own TA. 
 
-To address the challenge of the lack of TrustZone virtualization support, TEEv deploys the TEE-visor and vTEEs at the same privilege level, secure EL1. In addition, TEEv modified the commercial TEE by scanning vTEE's binary to remove the MMU-related instructions, so that TEE-visor can exclusively control the MMU. Controling the MMU, TEE-visor can protect itself in security and confidentiality, and isolate vTEEs by protecting each vTEE's entries. As a result of removing the sensitive instruction, TEE-visor is responsible for the communication between vTEE and corresponding client application (CA). In details, TEE-visor handles the request from CAs and verify the page access from TA to CA. For isolation of vTEEs and REEs, TEE-visor manage the page table exclusively in order that each vTEE and each REE can only access their own page. Similar to vTZ, TEE-visor protect the kernel of vTEEs by setting their kernel as read only.
+To address the challenge of the lack of TrustZone virtualization support, TEEv deploys the TEE-visor and vTEEs at the same privilege level, secure EL1. In addition, TEEv modified the commercial TEE by scanning vTEE's binary to remove the MMU-related instructions, so that TEE-visor can exclusively control the MMU. Controling the MMU, TEE-visor can protect itself in security and confidentiality, and isolate vTEEs by protecting each vTEE's entries. As a result of removing the sensitive instruction, TEE-visor is responsible for the communication between vTEE and corresponding client application (CA). In details, TEE-visor handles the request from CAs and verify the page access from TA to CA. For isolation of vTEEs and REEs, TEE-visor manage the page table exclusively in order that each vTEE and each REE can only access their own page. Similar to vTZ, TEE-visor protect the kernel of vTEEs by mapping their kernel's page as read only. (other details)
 
-The advantage of TEEv 
+The advantage of TEEv is high security and high flexibility. The vTEE in TEEv is not a traditional TEE and it is restricted. If a vTEE is malicious, it can not affect the other vTEEs and REEs. Its TCB is also low. The TEE-visor only contians 3800 lines of C and assembly code. Each TEE should only trust their own code base and TEE-visor. (CVEs and attacks) For the flexibility, TEEv allows to install multiple vTEEs and support each own TA. ()
 
-\section{SierraVisor}
+% The disadvantage of TEEv is 
 
-Proposed by Sierraware, a company dedicated to deliver the virtualization technologies and security solutions, SierraVisor is a hypervisor for ARM which is integrated with TrustZone and Android. Specifically, SierraVisor supports TrustZone Monitor as VMM on Cortex A9 and ARM11, i.e. SierraVisor use TrustZone Monitor and extend it as a hypervisor. The guest can continue to work without modification. And kernel can continue to run in supervisor mode. Guest OSes can run in their inidividual containers.~\cite{sierraware}
 
-graph of SierraVisor.
-
-Above is the architecture of SierraVisor. At the bottom there are TrustZone Monitor and SierraVisor Hypervisor. The SierraVisor has two hypervisor, normal world hypervisor and secure world hypervisor running in each world. Both hypervisor supports multiple OS in Normal World and Secure World. 
-
-As a product, SierraVisor is quite old because the supported SoC presenting on the their website is up to Cortex A15, a processors implementing the Armv7-A architecture. The timestamp of most web pages about SierraVisor freezes in 2012. But the idea of SierraVisor and its contribution on supporting multiple TEE-kernel is on the right direction. 
-% Different from KVM, SierraVisor is a type one hypervisor.
-
-(advantages: high compatibility, type-2 hypervisor, as long as linux support, mine supports.)
