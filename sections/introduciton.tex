@@ -6,11 +6,18 @@ Trusted Execution Environment (TEE) is a security domian in CPU who is isolated 
 
 \subsection{TrustZone}
 
-TrustZone~\cite{armtz2021} is the first commercial hardware architecture to support TEE. After development in these years, TrustZone is widely used in mobile devices to provide trusted computing. TrustZone seperates the hardware and software resources, such as memories, I/O, and interrupts, into two parts, Secure world and Non-secure world (i.e. Normal world). Each world has their own kernel space and user space, associated with cache, memory, and etc. Non-seucre world is not capable of accessing the resources in Secure world, but Secure world has access rights to resources in Non-secure world. In addition, each world has its own privileges level, represented in exception levels. Note that there is only Non-secure world having exception level 2 (EL2). Correspondingly, processors have two state, Secure state and Non-secure state, to handle affairs in two different worlds.
+TrustZone~\cite{armtz2021} is the first commercial hardware security architecture to support TEE. After development in these years, TrustZone is widely used in mobile devices to provide trusted computing. Figure~\ref{fig:TZ} shows TrustZone architecture on Armv8. TrustZone seperates the hardware and software resources, such as memories, I/O, and interrupts, into two parts, Secure world and Non-secure world (i.e. Normal world). Each world has their own kernel space and user space, associated with cache, memory, and etc. Non-seucre world is not capable of accessing the resources in Secure world, but Secure world has access rights to resources in Non-secure world. In addition, each world has its own privileges level, represented in exception levels. Note that there is only Non-secure world having exception level 2 (EL2). Correspondingly, processors have two state, Secure state and Non-secure state, to handle affairs in two different worlds.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.30]{security_model.png}
+    \caption{TrustZone Architecture in Armv8}
+    \label{fig:TZ}
+\end{figure}
 
 \subsection{Secure EL2}
 
-In Armv8.4-A, Secure EL2~\cite{armvirtual2021} is introduced as an optional feature. Virtualization is used to be in Normal world for there is no Hpy mode, the same with EL2, in Secure world. When the Secure Virtualization enable, the platform firmware in EL3 can be move to seperate partitions in EL1, so that the code in EL3 can be minimized. Secure Partion Manager (SPM) manages these Secure Partions (SPs). If EL2 in Secure world is supported, the processor needs use SCR\_EL3.EEL2 bit to enable it.  
+In Armv8.4-A, Secure EL2~\cite{armvirtual2021} is introduced as an optional feature. Virtualization is used to be in Normal world for there is no Hpy mode, the same with EL2, in Secure world. When the Secure Virtualization enable, the platform firmware in EL3 can be move to seperate partitions in EL1, so that the code in EL3 can be minimized. Secure Partion Manager (SPM) manages these Secure Partions (SPs). If EL2 in Secure world is supported, the processor needs use SCR\_EL3.EEL2 bit to enable it. 
 
 \subsection{Hafnium}
 
