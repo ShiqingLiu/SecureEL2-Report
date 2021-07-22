@@ -14,7 +14,11 @@ In Armv8.4-A, Secure EL2~\cite{armvirtual2021} is introduced as an optional feat
 
 \subsection{Hafnium}
 
-Hafnium~\cite{armhafnium2021} is an open-source software for manage the Secure Partion. 
+Hafnium~\cite{armhafnium2021} is an open-source software for manage the Secure Partion (SP). Hafnium provides memory isolation between multiple SPs, to better separate untrusted code from security-critical code. It is implemented as a type-1 hypervisor, where each security domain is a virtual machine (VM).
+
+On AArch64 it runs at EL2, while the SPs run at EL1 and user applications at EL0. A Secure Monitor such as Trusted Firmware-A runs at EL3.
+
+After some mild modifications it can fit for the secure hypervisor in our model very well.
 
 \subsection{Virtualization of TEE Technology}
 
