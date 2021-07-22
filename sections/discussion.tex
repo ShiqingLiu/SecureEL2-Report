@@ -14,11 +14,11 @@ we discussion the differences between S-EL2 and related works. List at least thr
 \begin{table}[]
     \begin{tabular}{@{}lllllll@{}}
     \toprule
-    \textbf{}                & \textbf{vTZ} & \textbf{TEEv} & \textbf{TDX} & \textbf{SEV} & \textbf{CCA} & \textbf{SecureEL2} \\ \midrule
-    Architecture             & Arm          & Arm           & Intel        & AMD          & Arm          & Arm                \\
-    modify code in TEE (EL0) & yes          & yes           &              & no           &              & no                 \\
-    modify code in TEE (EL1) & no           & no            &              & no           &              & no                 \\
-    modify normal world code & yes          & yes           &              &              &              & yes                \\ \bottomrule
+    \textbf{}                & \textbf{vTZ} & \textbf{TEEv} & \textbf{CCA} & \textbf{SecureEL2} \\ \midrule
+    Architecture             & Arm          & Arm           & Arm          & Arm                \\
+    modify code in TEE (EL0) & yes          & yes           & no           & no                 \\
+    modify code in TEE (EL1) & no           & no            & no           & no                 \\
+    modify normal world code & yes          & yes           & no           & yes                \\ \bottomrule
     \end{tabular}
     \end{table}
 
